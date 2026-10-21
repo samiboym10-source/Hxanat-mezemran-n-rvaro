@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="sv"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Hxanat Mezamran</title>
+<style>
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}body{margin:0;font-family:system-ui,sans-serif;background:#f0f2f5;color:#1a1a1a}
+#app{max-width:680px;margin:0 auto;padding:12px 12px 60px}
+h1{font-size:22px;text-align:center;margin:18px 0}h2{font-size:17px;margin:14px 0 8px}
+.card{background:#fff;border-radius:12px;padding:12px;margin:8px 0;box-shadow:0 1px 3px #0002}
+button{font:inherit;border:0;border-radius:8px;padding:9px 12px;background:#007aff;color:#fff;cursor:pointer;margin:2px}
+button.g{background:#34c759}button.r{background:#ff3b30}button.o{background:#8e8e93}button.big{width:100%;padding:13px;font-size:16px;margin:8px 0}
+input,select,textarea{font:inherit;width:100%;padding:10px;border:1px solid #d1d1d6;border-radius:8px;margin:4px 0;background:#fff}
+input[type=checkbox]{width:auto}label{display:block;margin-top:8px;font-size:14px;color:#555}
+.tabs{display:flex;gap:4px;overflow-x:auto;margin-bottom:8px}.tabs button{flex:1;white-space:nowrap;background:#e5e5ea;color:#222}.tabs button.on{background:#007aff;color:#fff}
+.top{display:flex;justify-content:space-between;align-items:center;gap:6px;flex-wrap:wrap}
+.y{background:#fff8e6;border-left:4px solid #ff9500;border-radius:6px;padding:6px 8px;margin-top:6px;font-size:14px}
+.err{color:#ff3b30;margin:8px 0}.sm{font-size:13px;color:#777}
+.row{display:flex;justify-content:space-between;align-items:center;gap:6px;flex-wrap:wrap}
+.st button{background:#e5e5ea;color:#222;min-width:44px}.st .p.on{background:#34c759;color:#fff}.st .x.on{background:#ff3b30;color:#fff}.st .a.on{background:#ffcc00;color:#222}
+.dayb{display:block;width:100%;text-align:left;background:#fff;color:#222;box-shadow:0 1px 3px #0002;margin:6px 0;padding:12px}
+</style>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+</head><body><div id="app"></div>
+<script>
+firebase.initializeApp({apiKey:"AIzaSyD_RzFD9EDVJUhWrTzlYix_8yt4iMm6zT8",authDomain:"hxanat-mezmur-nrvaro.firebaseapp.com",projectId:"hxanat-mezmur-nrvaro",storageBucket:"hxanat-mezmur-nrvaro.firebasestorage.app",messagingSenderId:"704645565315",appId:"1:704645565315:web:3bf8d1f453877b7f3d04b6"});
+const db=firebase.firestore(),H=id=>db.collection('hm').doc(id),FV=firebase.firestore.FieldValue;
+const $=s=>document.querySelector(s);
+const SV=['sön','mån','tis','ons','tors','fre','lör'],SVF=['Söndag','Måndag','Tisdag','Onsdag','Torsdag','Fredag','Lördag'],MO=['jan','feb','mar','apr','maj','jun','jul','aug','sep','okt','nov','dec'];
+const REAS={Sjuk:'Sjuk / ሕማም',Bortrest:'Bortrest / ጉዕዞ',Familj:'Familjeskäl / ስድራ ምኽንያት',Fotboll:'Fotbollsträning / ስልጠና ኩዑሶ',Annat:'Annat / ካልእ'};
+const e=s=>String(s??'').replace(/[&<>"']/g,c=>'&#'+c.charCodeAt(0)+';');
+const uid=()=>Math.random().toString(36).slice(2,9);
+const norm=p=>{p=(p||'').replace(/\D/g,'');if(p.startsWith('0046'))p='0'+p.slice(4);else if(p.startsWith('46'))p='0'+p.slice(2);return p};
+const phs=p=>(p.phone||'').split(/[,;]/).map(norm).filter(Boolean);
+const wa=(num,t)=>{const n=norm(String(num).split(/[,;]/)[0]);window.open('https://wa.me/'+(n?'46'+n.slice(1):'')+'?text='+encodeURIComponent(t),'_blank')};
+const PD=`Trhas|0738971692|Nayab Mehari,Esey Mehari
+Adiam Gebrehiwet|0723122247|Noh Filmon,Mariana Filmon
+Selam|0762809467|Eldana,Esrom,Efrata
+Rigat Tekleab|0729305263|Hevean,Milka,Rut
+Haben Mhreteab|0737867482|Esrom Iseyas,Rozina Iseyas
+Adhanet Musse|0728755749|Betania
+Teklu Hayle|0737638403|Yohanes Teklu
+Awet Rezene|0765895656|Harerta Awet,Melody Awet,Lidya Awet
+Michael Tsegay|0722751135|Lidia Michael,Rufta Michael
+Msgana Kbrizgi|0739074059|Petros Gere,Aryam Gere
+Awet Sium|0729381561|Noh Awet,Sara Awet,Hana Awet,Siem Awet
+Gebrezgi Habte|0762836373|Mikias Gebrezgi
+Zebib|0704097650|Mekseb Maekele,Aryam Maekele,Aleksander Maekele
+Yekealo Ghebremedhin|0767095359|Noah Yekealo
+Habtom Teklehaymanot|0700748570|Mewasti Habtom,Rufta Habtom
+Naxnet Sereqe|0720173303|Selina Mekonen,Gelila Mekonen,Siem Mekonen
+Simret|0736468568|Petros Dilom,Efrata Dilom
+Simret Sium|0736473497|Gelila Biniyam,Betlehem Biniyam
+Akberet|0720122949|Hyab Misgna,Saliem Misgna,Raei Misgna
+Adhanet|0765818004|Esawi,Kenani
+Alem|0737030554|Natnael Okube,Naod Okube
+Fishale|0736955386|Mikal Fishale,Melael Fishale
+Ezgorn|0736955505|Msgana Sbhatla
+Okubay|0737011713|Natnael Okubay,Naod Okubay
+Ykealo|0704055752|Matyas Ykealo
+Mebrahtom|0762153194|Solyana Mebrahtom,Marta Mebrahtom
+Saba Okubay|0733992851|Aram,Amanuel,Abigayl
+Rahel Weldehawaryat|0728421707|Senay Teklu,Banna Teklu
+Msgana Teklemariyam|0700394289|Winta Zeremichael,Natan Tewoldebrhan
+Yohannes Abadi|0760975453|Melody Yohannes,Mekseb Yohannes
+Freweini|0728430616|Matsola,Natan
+Fetwi Melake|0700133505|Esrom Fetwi
+Lichia Kesete|0762179635|Aleksander Tedros,Betlehem Tedros
+Meseret|0720034463|Boyz`;
+function seed(){return{people:[{id:'sa',name:'Diyakon Sami',phone:'0735764919',role:'super',kids:[]},{id:'ad1',name:'Fnan Diyakon',phone:'0722728468',role:'admin',kids:[]},{id:'ad2',name:'Yordanos Fitsium',phone:'0722891442',role:'admin',kids:['Etsepatos Mhreteab','Yosef Mhreteab','Petros Mhreteab','Sina Mhreteab']},...PD.split('\n').map((l,i)=>{const[n,p,k]=l.split('|');return{id:'p'+i,name:n,phone:p,role:'parent',kids:k.split(',')}})],settings:{start:'2026-10-24',end:'2027-12-31',days:[6,0],wa:'0762219665',pw:'kidusmikael12'}}}
+let D={people:[],settings:{start:'',end:'',days:[],wa:'',pw:''},reports:[],att:{}},ready=false,seeding=false,dirty=false,S={view:'login',lt:'ph'};
+function seedDB(){seeding=true;const s=seed();H('people').set({list:s.people});H('settings').set(s.settings)}
+const typing=()=>{const a=document.activeElement;return a&&/INPUT|TEXTAREA/.test(a.tagName)};
+function refresh(){if(typing()){dirty=true;return}render(1)}
+document.addEventListener('focusout',()=>{if(dirty)setTimeout(()=>{if(!typing()){dirty=false;render(1)}},300)});
+db.collection('hm').onSnapshot(sn=>{let people=null,settings=null;const reports=[],att={};
+sn.forEach(d=>{const x=d.data(),id=d.id;if(id=='people')people=x.list;else if(id=='settings')settings=x;else if(id.startsWith('rep_'))reports.push({...x,id:id.slice(4)});else if(id.startsWith('att_'))att[id.slice(4)]=x.m||{}});
+if(!people||!settings){if(!sn.metadata.fromCache&&!seeding)seedDB();return}
+seeding=false;D={people,settings,reports,att};
+if(!ready){ready=true;try{const s=JSON.parse(localStorage.getItem('hm_s')),p=s&&s.pid&&P(s.pid);if(p)S={view:isAdm(p)&&!p.kids.length?'admin':'parent',tab:'att',pid:p.id,open:{},oth:{},date:nextDate()};else if(s&&s.adm)S={view:'admin',tab:'att'}}catch(x){}render();return}
+refresh()},err=>{$('#app').innerHTML='<h1>Hxanat Mezamran</h1><div class=card><b>Kunde inte ansluta till databasen.</b><div class=sm>Kontrollera internet och försök igen. ('+e(err.code)+')</div></div>'});
+const P=id=>D.people.find(p=>p.id===id);
+const pd=s=>{const[a,b,c]=s.split('-');return new Date(+a,b-1,+c)};
+const iso=d=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+const fmt=s=>{const d=pd(s);return SV[d.getDay()]+' '+d.getDate()+' '+MO[d.getMonth()]+' '+d.getFullYear()};
+function dates(){const r=[],{start,end,days}=D.settings;if(!start||!end)return r;for(let d=pd(start),z=pd(end);d<=z;d.setDate(d.getDate()+1))if(days.includes(d.getDay()))r.push(iso(d));return r}
+const nextDate=()=>{const t=iso(new Date()),l=dates();return l.find(x=>x>=t)||l[0]||''};
+const back=f=>`<button class=o onclick="${f}">← Tillbaka / ተመለስ</button>`;
+const isAdm=p=>p&&(p.role==='admin'||p.role==='super');
+const flt=q=>document.querySelectorAll('[data-s]').forEach(x=>x.style.display=x.dataset.s.includes(q.toLowerCase())?'':'none');
+const search='<input placeholder="🔍 Sök namn / ፈልጥ" oninput="flt(this.value)">';
+const savePeople=()=>H('people').set({list:D.people});
+function go(o){Object.assign(S,o);render()}
+function out(){localStorage.removeItem('hm_s');S={view:'login',lt:'ph'};render()}
+function render(k){const y=scrollY;if(S.view=='parent'&&!P(S.pid))S={view:'login',lt:'ph'};
+$('#app').innerHTML='<h1>Hxanat Mezamran</h1>'+(!ready?'<div class=card>Laddar…</div>':({login:vLogin,parent:vParent,admin:vAdmin})[S.view]());scrollTo(0,k?y:0)}
+function vLogin(){return`<div class=tabs><button class="${S.lt=='ph'?'on':''}" onclick="go({lt:'ph'})">📱 Telefon</button><button class="${S.lt=='ad'?'on':''}" onclick="go({lt:'ad'})">👑 Admin</button></div><div class=card>`+(S.lt=='ph'?`<label>Telefonnummer / ቁጽሪ ተሌፎን</label><input id=ph type=tel inputmode=tel placeholder="07xxxxxxxx" onkeydown="if(event.key=='Enter')loginPh()"><div class=err id=err></div><button class=big onclick="loginPh()">Logga in / እቶ</button>`:`<label>Lösenord / መእተዊ ቃል</label><input id=pw type=password onkeydown="if(event.key=='Enter')loginAd()"><div class=err id=err></div><button class=big onclick="loginAd()">Logga in / እቶ</button>`)+'</div>'}
+function loginPh(){const n=norm($('#ph').value),p=n&&D.people.find(x=>phs(x).includes(n));if(!p){$('#err').innerHTML='Numret finns inte – kontakta admin<br>ቁጽሪ ኣይተረኽበን – ንኣድሚን ተወከሱ';return}
+localStorage.setItem('hm_s',JSON.stringify({pid:p.id}));S={view:isAdm(p)&&!p.kids.length?'admin':'parent',tab:'att',pid:p.id,open:{},oth:{},date:nextDate()};render()}
+function loginAd(){if($('#pw').value.trim()===D.settings.pw){localStorage.setItem('hm_s',JSON.stringify({adm:1}));S={view:'admin',tab:'att'};render()}else $('#err').textContent='Fel lösenord / ጌጋ መእተዊ ቃል'}
+
+/* FÖRÄLDER */
+const rep=(date,pid,kid)=>D.reports.find(r=>r.date==date&&r.pid==pid&&r.kid==kid);
+function vParent(){const me=P(S.pid),ds=dates();
+let h=`<div class=top><b>${e(me.name)}</b><span>${isAdm(me)?'<button onclick="go({view:\'admin\',tab:\'att\',day:null})">👑 Admin</button>':''}<button class=o onclick="out()">Logga ut / ውጻእ</button></span></div>
+<label>Välj dag / መዓልቲ ምረጽ</label><select onchange="go({date:this.value,open:{},oth:{}})">${ds.map(d=>`<option value="${d}" ${d==S.date?'selected':''}>${fmt(d)}</option>`).join('')}</select><h2>Mina barn / ደቀይ</h2>`;
+if(!me.kids.length)h+='<div class=card>Inga barn kopplade – kontakta admin<br>ደቆም የለን – ንኣድሚን ተወከሱ</div>';
+me.kids.forEach((k,i)=>{const r=rep(S.date,me.id,k);h+=`<div class=card><div class=row><b>${e(k)}</b>`;
+if(r)h+=`<span style="color:#34c759"><b>✓ Anmäld / ተመዝጊቡ</b></span></div><div class=sm>${e(r.reason)}</div><button class=r onclick="delRep('${r.id}')">❌ Ta bort anmälan / መዝገብ ኣወግድ</button>`;
+else if(S.open[i]){h+=`</div><select onchange="pick(${i},this.value)"><option value="">Välj anledning / ምኽንያት ምረጽ</option>${Object.entries(REAS).map(([k2,v])=>`<option value="${k2}" ${S.open[i]==k2?'selected':''}>${v}</option>`).join('')}</select>`;
+if(S.open[i]=='Annat')h+=`<input placeholder="Egen anledning / ናይ ርእስኻ ምኽንያት" value="${e(S.oth[i]||'')}" oninput="S.oth[${i}]=this.value"><button onclick="addRep(${i},'Annat')">OK</button>`;
+h+=`<button class=o onclick="S.open[${i}]=0;render()">Avbryt / ሰርዝ</button>`}
+else h+=`<button class=r onclick="S.open[${i}]=1;render()">Anmäl inte / ኣይመጽእን</button></div>`;h+='</div>'});
+if(D.reports.some(r=>r.date==S.date&&r.pid==me.id))h+=`<button class="g big" onclick="sendRep()">📤 Skicka anmälan till admin / ንኣድሚን ስደድ</button>`;
+return h}
+function pick(i,v){if(!v)return;S.open[i]=v;if(v=='Annat')render();else addRep(i,v)}
+function addRep(i,v){const me=P(S.pid);let r=REAS[v].split(' / ')[0];if(v=='Annat'){const t=(S.oth[i]||'').trim();if(!t){alert('Skriv en anledning / ምኽንያት ጸሓፍ');return}r='Annat: '+t}
+const k=me.kids[i];S.open[i]=0;delete S.oth[i];H('rep_'+uid()).set({date:S.date,pid:me.id,kid:k,reason:r})}
+function delRep(id){H('rep_'+id).delete()}
+function sendRep(){const me=P(S.pid),l=D.reports.filter(r=>r.date==S.date&&r.pid==me.id);
+wa(D.settings.wa,`📋 Frånvaroanmälan ${fmt(S.date)}\n👤 Förälder: ${me.name} (${me.phone})\n\n`+l.map(r=>`👶 ${r.kid} – ${r.reason}`).join('\n'))}
+
+/* ADMIN */
+const TABS=[['att','Närvaro'],['ppl','Personer'],['rep','Anmälningar'],['adm','Admins'],['set','⚙️ Inställningar']];
+function vAdmin(){const me=P(S.pid);return`<div class=top><span class=sm>👑 Adminvy · delad data</span><span>${me&&me.kids.length?'<button onclick="go({view:\'parent\'})">👶 Mina barn</button>':''}<button class=o onclick="out()">Logga ut</button></span></div><div class=tabs>${TABS.map(([k,l])=>`<button class="${S.tab==k?'on':''}" onclick="go({tab:'${k}',day:null,edit:null})">${l}</button>`).join('')}</div>`+({att:tAtt,ppl:tPpl,rep:tRep,adm:tAdm,set:tSet})[S.tab]()}
+const kids=()=>D.people.flatMap(p=>p.kids.map((k,i)=>({p,k,i})));
+function tAtt(){if(!S.day)return'<h2>Välj dag</h2>'+dates().map(d=>{const v=Object.values(D.att[d]||{}),n=D.reports.filter(r=>r.date==d).length;return`<button class=dayb onclick="go({day:'${d}'})"><b>${fmt(d)}</b><div class=sm>✓ ${v.filter(x=>x=='p').length} · ✗ ${v.filter(x=>x=='x').length} · A ${v.filter(x=>x=='a').length}${n?` · 🟡 ${n} anmälda av föräldrar`:''}</div></button>`}).join('');
+const d=S.day,at=D.att[d]||{},ks=kids(),c={p:0,x:0,a:0};
+const cards=ks.map(({p,k,i})=>{const s=at[p.id+'|'+k],r=rep(d,p.id,k);if(s)c[s]++;const b=v=>`onclick="st('${p.id}',${i},'${v}')"`;
+return`<div class=card data-s="${e((k+' '+p.name).toLowerCase())}"><div class=row><b>${e(k)}</b><span class=sm>${e(p.name)} · ${e(p.phone)}</span></div>${r?`<div class=y>🟡 Anmäld av: ${e(p.name)} (${e(p.phone)})<br>Anledning: ${e(r.reason)}</div>`:''}<div class=st><button class="p ${s=='p'?'on':''}" ${b('p')}>✓</button><button class="x ${s=='x'?'on':''}" ${b('x')}>✗</button><button class="a ${s=='a'?'on':''}" ${b('a')}>A</button></div></div>`}).join('');
+return back("go({day:null})")+`<h2>${fmt(d)}</h2><div class=card><b>✓ ${c.p} närvarande · ✗ ${c.x} frånvarande · A ${c.a} anmälda</b><div class=sm>${ks.length} barn totalt · ${ks.length-c.p-c.x-c.a} ej markerade</div><button class=g onclick="markAll()">✓ Markera övriga som närvarande</button></div>${search}${cards}<button class="g big" onclick="sendAtt()">📤 Skicka närvaro till WhatsApp</button>`}
+function st(pid,i,v){const d=S.day,key=pid+'|'+P(pid).kids[i],cur=(D.att[d]||{})[key];H('att_'+d).set({m:{[key]:cur==v?FV.delete():v}},{merge:true})}
+function markAll(){const d=S.day,m={};kids().forEach(({p,k})=>{const key=p.id+'|'+k;if(!(D.att[d]||{})[key])m[key]=rep(d,p.id,k)?'a':'p'});if(Object.keys(m).length)H('att_'+d).set({m},{merge:true})}
+function sendAtt(){const d=S.day,at=D.att[d]||{},g={p:[],x:[],a:[]};kids().forEach(({p,k})=>{const s=at[p.id+'|'+k];if(s)g[s].push(k)});
+wa(D.settings.wa,`📋 Närvaro ${fmt(d)}\n\n🟢 Närvarande (${g.p.length}): ${g.p.join(', ')||'–'}\n\n🔴 Frånvarande (${g.x.length}): ${g.x.join(', ')||'–'}\n\n🟡 Anmälda (${g.a.length}): ${g.a.join(', ')||'–'}`)}
+
+function tPpl(){const x=S.edit?P(S.edit):null;
+let h=`<div class=card><h2>${x?'Redigera person':'Lägg till ny person'}</h2><label>Namn</label><input id=pn value="${e(x?.name||'')}"><label>Telefonnummer (flera: separera med komma)</label><input id=pp value="${e(x?.phone||'')}"><label>Roll</label><select id=pr ${x?.role=='super'?'disabled':''}><option value=parent ${x?.role=='parent'?'selected':''}>Förälder</option><option value=admin ${x?.role=='admin'?'selected':''}>Admin</option>${x?.role=='super'?'<option selected>Super admin</option>':''}</select><label>Barn (separera med komma)</label><input id=pk value="${e((x?.kids||[]).join(', '))}">
+<button class=g onclick="savePerson()">${x?'Spara':'Lägg till'}</button>${x?'<button class=o onclick="go({edit:null})">Avbryt</button>':''}</div><h2>Alla personer (${D.people.length}) · ${kids().length} barn</h2>${search}`;
+return h+D.people.map(p=>`<div class=card data-s="${e((p.name+' '+p.phone+' '+p.kids.join(' ')).toLowerCase())}"><div class=row><b>${p.role!='parent'?'👑 ':''}${e(p.name)}</b><span class=sm>${e(p.phone||'inget nummer')}</span></div><div class=sm>${p.role=='super'?'Super admin':p.role=='admin'?'Admin':'Förälder'} · 👶 ${e(p.kids.join(', ')||'–')}</div><button onclick="go({edit:'${p.id}'})">✏️ Redigera</button>${p.role!='super'?`<button class=r onclick="delPerson('${p.id}')">Ta bort</button>`:''}</div>`).join('')}
+function savePerson(){const n=$('#pn').value.trim(),ph=$('#pp').value.trim();if(!n||!norm(ph.split(/[,;]/)[0])){alert('Namn och telefonnummer krävs');return}
+const k=$('#pk').value.split(',').map(s=>s.trim()).filter(Boolean),mine=phs({phone:ph});
+if(D.people.some(p=>p.id!=S.edit&&phs(p).some(z=>mine.includes(z)))){alert('Ett av numren används redan av någon annan');return}
+const b=db.batch();
+if(S.edit){const p=P(S.edit);p.name=n;p.phone=ph;if(p.role!='super')p.role=$('#pr').value;const gone=p.kids.filter(z=>!k.includes(z));D.reports.filter(r=>r.pid==p.id&&gone.includes(r.kid)).forEach(r=>b.delete(H('rep_'+r.id)));p.kids=k}else D.people.push({id:'n'+uid(),name:n,phone:ph,role:$('#pr').value,kids:k});
+b.set(H('people'),{list:D.people});S.edit=null;b.commit();render()}
+function delPerson(id){const p=P(id);if(!p||p.role=='super'||!confirm('Ta bort '+p.name+' och barnens anmälningar?'))return;const b=db.batch();D.reports.filter(r=>r.pid==id).forEach(r=>b.delete(H('rep_'+r.id)));D.people=D.people.filter(x=>x.id!=id);b.set(H('people'),{list:D.people});b.commit()}
+
+function tRep(){if(!S.day){const ds=[...new Set(D.reports.map(r=>r.date))].sort();return'<h2>Dagar med anmälningar</h2>'+(ds.length?ds.map(d=>`<button class=dayb onclick="go({day:'${d}'})"><b>${fmt(d)}</b> <span class=sm>(${D.reports.filter(r=>r.date==d).length} anmälda)</span></button>`).join(''):'<div class=card>Inga anmälningar än.</div>')}
+return back("go({day:null})")+`<h2>${fmt(S.day)}</h2>`+D.reports.filter(r=>r.date==S.day).map(r=>{const p=P(r.pid)||{};return`<div class=card><b>${e(r.kid)}</b><div class=sm>Förälder: ${e(p.name)} (${e(p.phone)})</div><div class=y>Anledning: ${e(r.reason)}</div><button class=r onclick="adminDel('${r.id}')">❌ Ta bort</button></div>`}).join('')}
+function adminDel(id){if(!confirm('Ta bort anmälan?'))return;if(D.reports.filter(r=>r.date==S.day).length<2)S.day=null;H('rep_'+id).delete()}
+
+function tAdm(){return'<h2>Admins</h2>'+search+D.people.map(p=>`<div class=card data-s="${e((p.name+' '+p.phone).toLowerCase())}"><div class=row><b>${p.role!='parent'?'👑 ':''}${e(p.name)}</b><span class=sm>${e(p.phone||'inget nummer')}</span></div>${p.role=='super'?'<div class=sm>Super admin – kan inte ändras</div>':p.role=='admin'?`<button class=r onclick="setRole('${p.id}','parent')">Ta bort admin</button>`:`<button onclick="makeAdmin('${p.id}')">Gör admin</button>`}</div>`).join('')}
+function setRole(id,r){P(id).role=r;savePeople()}
+function makeAdmin(id){const p=P(id);p.role='admin';savePeople();wa(p.phone,`Hej ${p.name}! Du är nu admin i Hxanat Mezamran. Öppna appen: ${location.href.split('#')[0]} och logga in med ditt telefonnummer.`)}
+
+function tSet(){const s=D.settings,order=[1,2,3,4,5,6,0];return`<h2>⚙️ Inställningar</h2><div class=card><b>Dagar</b><label>Startdatum (första dagen listan börjar)</label><input type=date id=sd value="${s.start}"><label>Slutdatum</label><input type=date id=ed value="${s.end}"><label>Veckodagar (välj en eller flera)</label>${order.map(i=>`<label style="display:inline-block;margin:4px 12px 4px 0;color:#222"><input type=checkbox class=dy value=${i} ${s.days.includes(i)?'checked':''}> ${SVF[i]}</label>`).join('')}<br><button class=g onclick="saveDates()">Spara datum & dagar</button></div>
+<div class=card><label>WhatsApp-nummer (dit anmälningar skickas)</label><input id=wn type=tel value="${e(s.wa)}"><label>Admin-lösenord</label><input id=wp value="${e(s.pw)}"><button class=g onclick="saveSet()">Spara inställningar</button></div>
+<div class=card><b>Säkerhetskopia</b><div class=sm>Laddar ner all data som en fil.</div><button onclick="exp()">⬇️ Exportera</button></div>
+<button class="r big" onclick="reset()">🗑️ Återställ allt</button>`}
+function saveDates(){const d=[...document.querySelectorAll('.dy:checked')].map(x=>+x.value);if(!$('#sd').value||!$('#ed').value||!d.length||$('#sd').value>$('#ed').value){alert('Kontrollera datum och veckodagar');return}Object.assign(D.settings,{start:$('#sd').value,end:$('#ed').value,days:d});H('settings').set(D.settings);alert('✅ Sparat – '+dates().length+' dagar i listan, synligt för alla')}
+function saveSet(){const p=$('#wp').value.trim();if(!p||!norm($('#wn').value)){alert('Nummer och lösenord krävs');return}D.settings.wa=$('#wn').value.trim();D.settings.pw=p;H('settings').set(D.settings);alert('✅ Sparat')}
+async function reset(){if(!(confirm('Rensa ALL data (för alla) och börja om?')&&confirm('Är du helt säker?')))return;const sn=await db.collection('hm').get(),b=db.batch();sn.forEach(d=>b.delete(d.ref));await b.commit();seedDB();out()}
+function exp(){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(D)],{type:'application/json'}));a.download='hxanat-mezamran-'+iso(new Date())+'.json';a.click()}
+render();
+</script></body></html>
